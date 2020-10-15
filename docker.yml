@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app-ui:
+    image: node:12
+    restart: always
+    ports:
+      - ${PORT_REMOTE_PROJECT_PROXY}:3000
+      - 3000:3000
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - .env 
+    environment:
+      CRYPTO_COMPARE_KEY: 28d7880537654d21a22296db773f9899ac339663df81938615266f6586f40518
+    #command: bash -c "npm install -g create-react-app && create-react-app app-ui && cd app-ui && npm start"  
+    #command: bash -c "yarn add @material-ui/core"  
+    #command: bash -c "cd app-ui && npm install && yarn start"  
+    #command: bash -c "cd app-ui && npm install && npm start"  
+    command: bash -c "cd app-ui && yarn install && yarn start"  
+    networks:
+      distributed:
+        ipv4_address: 172.31.1.1
+networks:
+  distributed:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.31.0.0/16
